@@ -1,0 +1,12 @@
+numpy==1.23.1
+pyyaml==5.1
+fvcore
+filterpy
+opencv-python
+argparse
+scikit-image
+shapely
+# Torch
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==2.0.1+cu118
+torchvision
