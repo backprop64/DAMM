@@ -125,7 +125,7 @@ def stitch_tracklets(csvs, tracklets_to_maintain=[1, 2]):
             )
 
             print("merged:", first_end_id, closest_start_id)
-            file2mouse[id].append(closest_start_id)
+            file2mouse[first_end_id].append(closest_start_id)
 
         except:
             print("done merging")
@@ -213,9 +213,9 @@ class Tracker:
                 all_trajectories.append(trajectory)
 
         all_csv_paths = []
-        for data in all_trajectories:
+        for i, data in enumerate(all_trajectories):
             headers = ["top-x", "top-y", "bottom-x", "bottom-y", "id", "frame"]
-            tracklet_id = data[0][-2]
+            tracklet_id = i
             # Write the data to a CSV file
             filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_id)}_data.csv")
             all_csv_paths.append(filename)
