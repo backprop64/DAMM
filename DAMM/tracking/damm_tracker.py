@@ -216,6 +216,8 @@ class Tracker:
         for i, data in enumerate(all_trajectories):
             headers = ["top-x", "top-y", "bottom-x", "bottom-y", "id", "frame"]
             tracklet_id = i
+            for row in data:
+                row[headers.index("id")] = tracklet_id
             # Write the data to a CSV file
             filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_id)}_data.csv")
             all_csv_paths.append(filename)
