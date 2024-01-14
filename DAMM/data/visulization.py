@@ -35,7 +35,7 @@ def visualize_tracking(video_path, csv_files, output_path):
     frame_data_dict = {}
     id_color_map = {}
 
-    for i in range(1, len(csv_files) + 1):
+    for i in range(0, len(csv_files) + 1):
         id_color_map[i] = generate_random_pastel_color()
 
     all_frames = []
