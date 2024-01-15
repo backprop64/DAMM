@@ -1,11 +1,8 @@
 from .sort import Sort
-import numpy as np
 import os
-import torch
 from tqdm import tqdm
-import cv2
 import csv
-from ..data import add_padding, squarify_crop, save_cropped_video, visualize_tracking
+from ..data import visualize_tracking
 from ..detection import Detector
 import warnings
 import pandas as pd
