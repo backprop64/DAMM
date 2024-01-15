@@ -8,7 +8,7 @@ First install the codabase on your computer (expects a GPU)
 $ conda create -n DAMM python=3.9 
 $ git clone https://github.com/backprop64/DAMM 
 $ pip install -r requirements-gpu.txt
-$ python setup_gpu.py install 
+$ python DAMM/setup_gpu.py install 
 
 ```
 ---
