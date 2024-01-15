@@ -99,7 +99,7 @@ def find_next_closest_start_id(id_to_frame_range, start, ids):
     return closest_start_id, closet_start_frame
 
 
-def stitch_tracklets(csvs, tracklets_to_maintain=[1, 2]):
+def stitch_tracklets(csvs, tracklets_to_maintain=[0, 1]):
     id_to_bounding_boxes, id_to_frame_range = read_tracklets(csvs)
 
     file2mouse = {}
@@ -120,12 +120,14 @@ def stitch_tracklets(csvs, tracklets_to_maintain=[1, 2]):
                 id_to_frame_range, first_end_frame, mergable_tracklets
             )
 
-            id_to_bounding_boxes, id_to_frame_range = merge_keys(
-                id_to_bounding_boxes, id_to_frame_range, first_end_id, closest_start_id
-            )
+            if closest_start_id not in tracklets_to_maintain:
+                if first_end_id < closest_start_id:
+                    id_to_bounding_boxes, id_to_frame_range = merge_keys(
+                        id_to_bounding_boxes, id_to_frame_range, first_end_id, closest_start_id
+                    )
 
-            print("merged:", first_end_id, closest_start_id)
-            file2mouse[first_end_id].append(closest_start_id)
+                    print("merged:", first_end_id, closest_start_id)
+                    file2mouse[first_end_id].append(closest_start_id)
 
         except:
             print("done merging")
@@ -231,18 +233,18 @@ class Tracker:
         
         if num_mice:
             __, __, ids2mouse = stitch_tracklets(
-                all_csv_paths, tracklets_to_maintain=[i+1 for i in range(num_mice)]
+                all_csv_paths, tracklets_to_maintain=[i for i in range(num_mice)]
             )
             print(ids2mouse)
             all_csv_paths = []
             for mouse_id, tracklet_ids in ids2mouse.items():
-                print("mouse id", mouse_id, "tracking data saved to", filename)
                 for tracklet_num in tracklet_ids:
                     tracklet_filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_num)}_data.csv")
                     mouse_filename = os.path.join(video_output_dir,'mouse_trajectories', f"mouse_{str(mouse_id)}_part_{str(tracklet_num)}_data.csv")
                     shutil.copy(tracklet_filename, mouse_filename)
                     all_csv_paths.append(mouse_filename)
-        
+                    print("mouse id", mouse_id, "tracking data saved to", mouse_filename)
+
         return all_csv_paths
 
     def interpolate_tracks(self, tracking_data_csv):
