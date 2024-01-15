@@ -9,42 +9,21 @@ $ conda create -n DAMM python=3.9
 $ git clone https://github.com/backprop64/DAMM 
 $ pip install -r requirements-gpu.txt
 ```
+---
 
 ## Use our system entirely in Google Colab
 
-### Tracking Notebook [![here](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1AK9Y7PO4HKNRZ05UgmeJB8NyV2it_V0z?usp=sharing)
+### Tracking Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1AK9Y7PO4HKNRZ05UgmeJB8NyV2it_V0z?usp=sharing)
+- Use this notebook to track mice in videos using default DAMM weights (will be downloaded in the notebook), or using your own weights (created using the fine tuning notebook; see below). This notebook only optionally uses custom weights/config file. 
 
-- **Description:**
-  - Track mice in your videos using DAMM.
-  - Inputs: Video files.
-  - Outputs: Tracking data (CSV file with bounding box coordinates per frame) and a visualization video.
-  - Specify the maximum number of mice visible in any frame.
-
+### Fine Tuning DAMM Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tVG6HvkxVKCKRzauVEhld3Jp7WZM8QK0?usp=sharing)
+- Use this notebook to create a dataset, annotate bouning boxes, and fine tune a object detection model that will be used in the Tracking Notebook for tracking. All you need to use this notebok is a video or directory containing videos
 ---
 
-### Fine-Tune DAMM Notebook 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tVG6HvkxVKCKRzauVEhld3Jp7WZM8QK0?usp=sharing)
-- **Description:**
-  - This notebook is designed for three primary functions:
-    1. Creating a custom dataset for fine-tuning the DAMM model.
-    2. Fine-tuning the DAMM model with the custom dataset.
-    3. Tracking animals in your videos using the fine-tuned model.
-  - Steps:
-    - For dataset creation, use a GUI in Google Colab to sample and annotate images, preparing a dataset suitable for fine-tuning a mouse detector.
-    - Fine-tune the DAMM model using this dataset to enhance tracking accuracy in your specific experimental setup.
-    - After fine-tuning, use the model to track animals in your videos. This will output tracking data (CSV file with bounding box coordinates per frame) and a visualization video with the tracked animals.
-  - Outputs:
-    - A newly fine-tuned detector and its configuration file.
-    - Tracking data and visualization videos for your animal tracking experiments.
-
----
-
-### Community Contributed Notebooks for Follow-Up Data Analysis of DAMM Tracking Output
-- **Description:**
-  - Series of notebooks for analysis on DAMM tracking output data:
-    1. Heat map generation.
-    2. Kinematics analysis.
-    3. Annotating experimental setups (e.g., behavioral apparatus).
+## Community Contributed Notebooks for Follow-Up Data Analysis of DAMM Tracking Output
+  1. Heat map generation.[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM)
+  2. Kinematics analysis.[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM)
+  3. Annotating experimental setups (e.g., behavioral apparatus).[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM)
 --- 
 
 ## Example usage (Code API)
