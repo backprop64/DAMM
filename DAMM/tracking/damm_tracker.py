@@ -125,12 +125,10 @@ def stitch_tracklets(csvs, tracklets_to_maintain=[0, 1]):
                     id_to_bounding_boxes, id_to_frame_range = merge_keys(
                         id_to_bounding_boxes, id_to_frame_range, first_end_id, closest_start_id
                     )
-
-                    print("merged:", first_end_id, closest_start_id)
                     file2mouse[first_end_id].append(closest_start_id)
 
         except:
-            print("done merging")
+            pass
 
     return id_to_bounding_boxes, id_to_frame_range, file2mouse
 
@@ -147,7 +145,6 @@ class Tracker:
             model_path=model_path,
             output_dir=output_dir,
         )
-        print("initilizing tracker with weights from: ", model_path)
         self.output_dir = output_dir
 
     def track_video(
@@ -171,7 +168,7 @@ class Tracker:
             max_detections=num_mice,
         )
         detections_and_tracks = []
-        for i, det in tqdm(enumerate(detections)):
+        for i, det in tqdm(enumerate(detections), total=len(detections), desc="Computing Trajectories"):
             tracks = mot_tracker.update(det)
             detections_and_tracks.append([i, det.astype(int), tracks.astype(int)])
 
@@ -199,8 +196,7 @@ class Tracker:
 
         max_id = 0
         merged_track_ids = []
-
-        for i, det, tracks in tqdm(detections_and_tracks):
+        for i, det, tracks in tqdm(detections_and_tracks, total=len(detections_and_tracks), desc="Stitching Trajectories"):
             for track in tracks:
                 merged_track_ids.append(track.tolist() + [i])
                 id = track.tolist()[-1]
@@ -223,7 +219,6 @@ class Tracker:
             # Write the data to a CSV file
             filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_id)}_data.csv")
             all_csv_paths.append(filename)
-            print("tracklet id", tracklet_id, "tracking data saved to", filename)
             with open(filename, "w", newline="") as csvfile:
                 csv_writer = csv.writer(csvfile)
                 csv_writer.writerow(headers)  # Write the headers as the first row
@@ -235,15 +230,23 @@ class Tracker:
             __, __, ids2mouse = stitch_tracklets(
                 all_csv_paths, tracklets_to_maintain=[i for i in range(num_mice)]
             )
-            print(ids2mouse)
             all_csv_paths = []
             for mouse_id, tracklet_ids in ids2mouse.items():
+                mouse_csv_paths = []
                 for tracklet_num in tracklet_ids:
                     tracklet_filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_num)}_data.csv")
                     mouse_filename = os.path.join(video_output_dir,'mouse_trajectories', f"mouse_{str(mouse_id)}_part_{str(tracklet_num)}_data.csv")
+                    mouse_csv_paths.append(mouse_filename)
                     shutil.copy(tracklet_filename, mouse_filename)
                     all_csv_paths.append(mouse_filename)
-                    print("mouse id", mouse_id, "tracking data saved to", mouse_filename)
+
+                dfs = [pd.read_csv(csv_path) for csv_path in mouse_csv_paths]
+                concatenated_df = pd.concat(dfs, ignore_index=True)
+                concatenated_df = concatenated_df.sort_values(by='frame').reset_index(drop=True)
+                mouse_output_filename = os.path.join(video_output_dir, f"mouse_{str(mouse_id)}_tracking_data.csv")
+                concatenated_df.to_csv(mouse_output_filename, index=False)
+                print("mouse id", mouse_id, "tracking data saved to", mouse_output_filename)
+
 
         return all_csv_paths
 
@@ -266,3 +269,4 @@ class Tracker:
 
         # Write the updated DataFrame to a new CSV file
         df_all_frames.to_csv(tracking_data_csv, index=False)
+        

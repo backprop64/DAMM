@@ -89,6 +89,10 @@ class Detector:
         self.cfg.DATASETS.TEST = ("test_split",)
 
         # pre fine tune test
+        print()
+        print("### Per Fine Tuning Evaluation ###")
+        print()
+
         evaluator = COCOEvaluator(
             "test_split", self.cfg, False, output_dir=self.cfg.OUTPUT_DIR
         )
@@ -117,6 +121,10 @@ class Detector:
         self.cfg.MODEL.WEIGHTS = os.path.join(self.cfg.OUTPUT_DIR, "model_final.pth")
 
         # post fine tune test
+        print()
+        print("### Post Fine Tuning Evaluation ###")
+        print()
+        
         evaluator = COCOEvaluator(
             "test_split", self.cfg, False, output_dir=self.cfg.OUTPUT_DIR
         )
@@ -171,7 +179,7 @@ class Detector:
         else:
             num_frames = max_frames
 
-        for f in tqdm(range(num_frames)):
+        for f in tqdm(range(num_frames),total=len(range(num_frames)),desc="Detecting Mice in Video Frames"):
             ___, frame = cap.read()
             try:
                 outputs = self.detector(frame)

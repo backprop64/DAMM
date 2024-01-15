@@ -85,6 +85,15 @@ def visualize_tracking(video_path, csv_files, output_path):
                     id_color_map[obj_id],
                     2,
                 )
+                
+        # Write frame number in neon green every second
+        if int(frame_num % fps) == 0:
+            frame_num_to_display = frame_num
+
+        frame_number_text = f"Frame: {frame_num_to_display}"
+        text_size = cv2.getTextSize(frame_number_text, cv2.FONT_HERSHEY_SIMPLEX, 1, 1)[0]
+        text_position = (width - text_size[0] - 10, height - 10)
+        cv2.putText(frame, frame_number_text, text_position, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
         out.write(frame)
 
