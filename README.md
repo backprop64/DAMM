@@ -66,7 +66,7 @@ damm_detector.predict_img(
 
 # fine tune detector, (hidden step: 100 images were sampled randomly and annotated in collab)
 damm_detector.train_detector(
-    "/nfs/turbo/justincj-turbo/kaulg/DAMM/demo/data/saline_cno_dataset/metadata.json"
+    "my_dataset/metadata.json"
 )
 
 # Use fine_tuned weights to detect mice in images (few-shot/50-shot)
@@ -79,7 +79,7 @@ damm_detector.predict_img(
 damm_tracker = Tracker(
     cfg_path="/demo_output/training/config.yaml",
     model_path="demo_output/model_final.pth",
-    output_dir="/tracking_output",
+    output_dir="demo_output/tracking_output",
 )
 
 damm_tracker.track_video(
@@ -89,6 +89,7 @@ damm_tracker.track_video(
     max_age=100,
     min_hits=10,
     iou_threshold=0.1,
-    visulize=True
+    visulize=True,
+    num_mice=2,
 )
 ```
