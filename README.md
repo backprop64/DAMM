@@ -18,8 +18,8 @@ $ python DAMM/setup_gpu.py install
 
 Use this notebook to track mice in videos. You can either use our default DAMM weights (will be automatically downloaded into the notebook), or use your own weights (created using the fine-tuning notebook; see below).
 
-### DAMM Fine-Tuning Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tVG6HvkxVKCKRzauVEhld3Jp7WZM8QK0?usp=sharing)
-Use this notebook to create a dataset, annotate bounding boxes, and fine tune an object detection model. The fined tuned model can be used for tracking in this notebook, or in the Tracking Notebook.
+### DAMM Fine Tuning Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tVG6HvkxVKCKRzauVEhld3Jp7WZM8QK0?usp=sharing)
+Use this notebook to create a dataset, annotate bounding boxes, and fine-tune an object detection model. The fined tuned model can be used for tracking in this notebook, or in the Tracking Notebook.
 
 ## Community Contributed Notebooks for Follow-Up Data Analysis of DAMM Tracking Output
 | Notebook | Name   | Contributor |
