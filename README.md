@@ -21,10 +21,13 @@ $ pip install -r requirements-gpu.txt
 ---
 
 ## Community Contributed Notebooks for Follow-Up Data Analysis of DAMM Tracking Output
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) Heat map generation.
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) Kinematics analysis
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) Annotating experimental setups (e.g., behavioral apparatus)
---- 
+| Notebook | Name   | Contributor |
+| :---:   | :---: | :---: |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) | Heat map generation | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) | Kinematics analysis | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) | Annotating experimental setups (e.g., behavioral apparatus) | AER Lab |
+---
+
 
 ## Example usage (Code API)
 
