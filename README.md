@@ -1,8 +1,7 @@
 # Detect Any Mouse Model (DAMM)
 *A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
 
-## Setup our Codebase locally
-First install the codabase on your computer (expects a GPU)
+## Setup our codebase locally (expects a gpu)
 
 ```bash
 $ conda create -n DAMM python=3.9 
@@ -16,7 +15,8 @@ $ python DAMM/setup_gpu.py install
 ## Use our system entirely in Google Colab
 
 ### Tracking Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1AK9Y7PO4HKNRZ05UgmeJB8NyV2it_V0z?usp=sharing)
-- Use this notebook to track mice in videos using default DAMM weights (will be downloaded in the notebook), or using your own weights (created using the fine tuning notebook; see below). This notebook only optionally uses custom weights/config file. 
+
+Use this notebook to track mice in videos. You can either use our default DAMM weights (will be automatically downloaded into the notebook), or use your own weights (created using the fine tuning notebook; see below).
 
 ### Fine Tuning DAMM Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1tVG6HvkxVKCKRzauVEhld3Jp7WZM8QK0?usp=sharing)
 - Use this notebook to create a dataset, annotate bouning boxes, and fine tune a object detection model that will be used in the Tracking Notebook for tracking. All you need to use this notebok is a video or directory containing videos
