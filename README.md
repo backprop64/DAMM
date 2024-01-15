@@ -21,9 +21,9 @@ $ pip install -r requirements-gpu.txt
 ---
 
 ## Community Contributed Notebooks for Follow-Up Data Analysis of DAMM Tracking Output
-  1. Heat map generation.[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM)
-  2. Kinematics analysis.[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM)
-  3. Annotating experimental setups (e.g., behavioral apparatus).[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) Heat map generation.
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) Kinematics analysis
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) Annotating experimental setups (e.g., behavioral apparatus)
 --- 
 
 ## Example usage (Code API)
