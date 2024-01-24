@@ -69,7 +69,6 @@ def visualize_tracking(video_path, csv_files, output_path):
     thickness_factor = min(width, height) / 500
     box_thickness = max(int(3 * thickness_factor), 1)
     text_thickness = max(int(1 * thickness_factor), 1)
-    print("@#@#$#$@$@#", height, width, box_thickness, text_thickness)
 
     for frame_num in tqdm(range(max_frame_num)):
         ret, frame = cap.read()
