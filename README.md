@@ -24,9 +24,10 @@ Use this notebook to create a dataset, annotate bounding boxes, and fine-tune an
 ## Community Contributed Notebooks for Follow-Up Data Analysis of DAMM Tracking Output
 | Notebook | Name   | Contributor |
 | :---:   | :---: | :---: |
-| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) | Heat map generation | AER Lab |
-| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) | Kinematics analysis | AER Lab |
-| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/backprop64/DAMM) | Annotating experimental setups (e.g., behavioral apparatus) | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/11iYuzp51gdyTJswMUHQONymwqo6feZed?usp=sharing) | Computing Centeroids | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1UfktWaedUL5aS4DM8NrYLscKMP_vGwGR?usp=sharing) | Heat map generation | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16S11QrjkpsXIksQf6MqjvfJJLn_fbe-b?usp=sharing) | Kinematics analysis | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/19f8eERE5KXh0Sk9RFNPR1JT9FgvXdOY7?usp=sharing) | Annotating experimental setups (e.g., behavioral apparatus) | AER Lab |
 ---
 
 
