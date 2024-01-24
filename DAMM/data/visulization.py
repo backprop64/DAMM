@@ -10,7 +10,7 @@ from collections import defaultdict
 
 def generate_random_pastel_color():
     # Hardcoded range for pastel colors
-    min_value = 150
+    min_value = 200
     max_value = 255
     max_variation = 30
 
@@ -25,13 +25,14 @@ def generate_random_pastel_color():
 
     return (r, g, b)
 
+
 def visualize_detections():
     return 0
 
-def visualize_tracking(video_path, csv_files, output_path):
 
+def visualize_tracking(video_path, csv_files, output_path):
     print("visualizing frames")
-    
+
     frame_data_dict = {}
     id_color_map = {}
 
@@ -43,7 +44,7 @@ def visualize_tracking(video_path, csv_files, output_path):
         with open(file, "r") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                obj_id = int(float(file.split('_')[-4]))
+                obj_id = int(float(file.split("_")[-4]))
                 frame_num = int(float(row["frame"]))
                 top_x = int(float(row["top-x"]))
                 top_y = int(float(row["top-y"]))
@@ -64,6 +65,12 @@ def visualize_tracking(video_path, csv_files, output_path):
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
     max_frame_num = max(all_frames)
 
+    # Calculate thickness based on video size
+    thickness_factor = min(width, height) / 500
+    box_thickness = max(int(3 * thickness_factor), 1)
+    text_thickness = max(int(1 * thickness_factor), 1)
+    print("@#@#$#$@$@#", height, width, box_thickness, text_thickness)
+
     for frame_num in tqdm(range(max_frame_num)):
         ret, frame = cap.read()
         if not ret:
@@ -74,7 +81,11 @@ def visualize_tracking(video_path, csv_files, output_path):
                 obj_id, box_coords = obj_data
                 top_x, top_y, bottom_x, bottom_y = box_coords
                 cv2.rectangle(
-                    frame, (top_x, top_y), (bottom_x, bottom_y), id_color_map[obj_id], 2
+                    frame,
+                    (top_x, top_y),
+                    (bottom_x, bottom_y),
+                    id_color_map[obj_id],
+                    box_thickness,
                 )
                 cv2.putText(
                     frame,
@@ -83,10 +94,11 @@ def visualize_tracking(video_path, csv_files, output_path):
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.5,
                     id_color_map[obj_id],
-                    2,
+                    text_thickness,
                 )
-                
+
         # Write frame number in neon green every second
+        """      
         if int(frame_num % fps) == 0:
             frame_num_to_display = frame_num
 
@@ -94,6 +106,7 @@ def visualize_tracking(video_path, csv_files, output_path):
         text_size = cv2.getTextSize(frame_number_text, cv2.FONT_HERSHEY_SIMPLEX, 1, 1)[0]
         text_position = (width - text_size[0] - 10, height - 10)
         cv2.putText(frame, frame_number_text, text_position, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        """
 
         out.write(frame)
 
