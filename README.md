@@ -1,4 +1,4 @@
-# Detect Any Mouse Model (DAMM)
+# Detect Any Mouse Model (DAMM) [[project page](web.eecs.umich.edu/gkaul/DAMM/)]
 A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
 
 ## Setup our codebase locally (expects a gpu)
