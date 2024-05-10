@@ -6,9 +6,8 @@ A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
 ```bash
 $ conda create -n DAMM python=3.9 
 $ git clone https://github.com/backprop64/DAMM 
-$ pip install -r requirements-gpu.txt
+$ pip install -r DAMM/requirements-gpu.txt
 $ python DAMM/setup_gpu.py install 
-
 ```
 ---
 
