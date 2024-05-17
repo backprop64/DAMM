@@ -1,7 +1,8 @@
-import os
-import json
-import random
 import glob
+import json
+import os
+import random
+
 from detectron2.data import MetadataCatalog, DatasetCatalog
 from detectron2.structures import BoxMode
 

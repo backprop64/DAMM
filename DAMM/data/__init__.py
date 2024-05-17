@@ -4,6 +4,5 @@ from .utils import sample_frames
 from .utils import add_padding
 from .utils import squarify_crop
 from .utils import save_cropped_video
-from .visulization import generate_random_pastel_color
-from .visulization import visualize_detections
-from .visulization import visualize_tracking
+from .visualization import generate_random_pastel_color
+from .visualization import visualize_tracking

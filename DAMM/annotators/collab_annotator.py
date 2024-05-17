@@ -22,25 +22,28 @@
 
 """Utils for colab tutorials located in object_detection/colab_tutorials/..."""
 import base64
+import cv2
 import io
+from IPython.display import display
+from IPython.display import Javascript
 import json
+import numpy as np
+import os
+from PIL import Image
+from pathlib import Path
+import random
+from six import BytesIO
+import string
+from tqdm import tqdm
 from typing import Dict
 from typing import List
 from typing import Union
 import uuid
-from six import BytesIO
-import os
-from IPython.display import display
-from IPython.display import Javascript
-import numpy as np
-from PIL import Image
 
-import os
-import cv2
-import random
-import string
-from pathlib import Path
-from tqdm import tqdm
+
+
+
+
 from google.colab import output
 from google.colab.output import eval_js
 

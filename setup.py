@@ -5,7 +5,7 @@ with open('requirements-colab.txt') as f:
 
 setup(
     name='DAMM',
-    version='0.1',
+    version='0.2',
     packages=find_packages(),
     install_requires=required,
     author='Gaurav Kaul',

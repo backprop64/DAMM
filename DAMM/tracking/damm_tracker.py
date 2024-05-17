@@ -1,16 +1,14 @@
-from .sort import Sort
-import os
-from tqdm import tqdm
 import csv
 from ..data import visualize_tracking
 from ..detection import Detector
-import warnings
+import os
 import pandas as pd
 import shutil
+from .sort import Sort
+from tqdm import tqdm
+import warnings
 
 warnings.filterwarnings("ignore")
-
-import pandas as pd
 
 
 def read_tracklets(csv_files):
@@ -152,7 +150,7 @@ class Tracker:
         max_age=150,
         min_hits=10,
         iou_threshold=0.1,
-        visulize=True,
+        visualize=True,
         num_mice = None
     ):
         mot_tracker = Sort(
@@ -179,11 +177,11 @@ class Tracker:
             detections_and_tracks, video_output_dir, num_mice
         )
 
-        if visulize:
+        if visualize:
             visualize_tracking(
                 video_path,
                 all_csv_paths,
-                os.path.join(video_output_dir, "tracking_visulized.mp4"),
+                os.path.join(video_output_dir, "tracking_visualized.mp4"),
             )
 
     def postprocess_sort_output(self, detections_and_tracks, video_output_dir,num_mice = None):

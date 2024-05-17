@@ -1,17 +1,15 @@
-import torch
-import os
-import argparse
 import cv2
 import numpy as np
-from glob import glob
+import os
+import torch
+from tqdm import tqdm
 
 from ..data.datasets import DetectorDataset
-from ..data.visulization import generate_random_pastel_color
-from tqdm import tqdm
+from ..data.visualization import generate_random_pastel_color
 from detectron2 import model_zoo
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultTrainer, DefaultPredictor
-from detectron2.data import build_detection_test_loader, DatasetCatalog
+from detectron2.data import build_detection_test_loader
 from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 
 pretrained_weights = {
@@ -22,7 +20,6 @@ pretrained_weights = {
     "LVIS_mask_50": "LVISv0.5-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml",
     "LVIS_mask_101": "LVISv0.5-InstanceSegmentation/mask_rcnn_R_101_FPN_1x.yaml",
 }
-
 
 class Detector:
     def __init__(
@@ -137,7 +134,7 @@ class Detector:
         os.makedirs(output_folder, exist_ok=True)
         if isinstance(img_paths, str):
             img_paths = [img_paths]
-        visulized_paths = []
+        visualized_paths = []
         for file_path in tqdm(img_paths):
             img_rgb = cv2.imread(file_path)
             # img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -157,10 +154,10 @@ class Detector:
                 )
 
             filename = os.path.basename(file_path)
-            output_path = os.path.join(output_folder, f"visualized_{filename}")
-            visulized_paths.append(output_path)
+            output_path = os.path.join(output_folder, f"visulized_{filename}") 
+            visualized_paths.append(output_path)
             cv2.imwrite(output_path, img_rgb)
-        return visulized_paths
+        return visualized_paths
 
     def predict_video(
         self,

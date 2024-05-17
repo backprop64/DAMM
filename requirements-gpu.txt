@@ -4,6 +4,7 @@ Pillow==9.5.0
 setuptools==59.5.0
 fvcore
 filterpy
+pandas
 opencv-python
 argparse
 scikit-image

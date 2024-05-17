@@ -1,8 +1,8 @@
+import cv2
 import numpy as np
 import os
-from tqdm import tqdm
-import cv2
 import random 
+from tqdm import tqdm
 
 def find_video_files(directory):
     video_files = []
