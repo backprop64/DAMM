@@ -174,7 +174,7 @@ class Tracker:
         )
 
         all_csv_paths = self.postprocess_sort_output(
-            detections_and_tracks, video_output_dir, num_mice
+            detections_and_tracks, video_output_dir, num_mice,video_filename
         )
 
         if visualize:
@@ -184,7 +184,7 @@ class Tracker:
                 os.path.join(video_output_dir, "tracking_visualized.mp4"),
             )
 
-    def postprocess_sort_output(self, detections_and_tracks, video_output_dir,num_mice = None):
+    def postprocess_sort_output(self, detections_and_tracks, video_output_dir,num_mice = None,video_filename=''):
         os.makedirs(video_output_dir, exist_ok=True)
         os.makedirs(os.path.join(video_output_dir,'preprocessed_tracks'), exist_ok=True)
         os.makedirs(os.path.join(video_output_dir,'mouse_trajectories'), exist_ok=True)
@@ -212,7 +212,7 @@ class Tracker:
             for row in data:
                 row[headers.index("id")] = tracklet_id
             # Write the data to a CSV file
-            filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_id)}_data.csv")
+            filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_id)}_data_video_{video_filename}.csv")
             all_csv_paths.append(filename)
             with open(filename, "w", newline="") as csvfile:
                 csv_writer = csv.writer(csvfile)
@@ -238,7 +238,7 @@ class Tracker:
                 dfs = [pd.read_csv(csv_path) for csv_path in mouse_csv_paths]
                 concatenated_df = pd.concat(dfs, ignore_index=True)
                 concatenated_df = concatenated_df.sort_values(by='frame').reset_index(drop=True)
-                mouse_output_filename = os.path.join(video_output_dir, f"mouse_{str(mouse_id)}_tracking_data.csv")
+                mouse_output_filename = os.path.join(video_output_dir, f"mouse_{str(mouse_id)}_tracking_data_video_{video_filename}.csv")
                 concatenated_df.to_csv(mouse_output_filename, index=False)
                 print("mouse id", mouse_id, "tracking data saved to", mouse_output_filename)
 
