@@ -229,7 +229,7 @@ class Tracker:
             for mouse_id, tracklet_ids in ids2mouse.items():
                 mouse_csv_paths = []
                 for tracklet_num in tracklet_ids:
-                    tracklet_filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_num)}_data.csv")
+                    tracklet_filename = os.path.join(video_output_dir,'preprocessed_tracks', f"tracklet_{str(tracklet_id)}_data_video_{video_filename}.csv")
                     mouse_filename = os.path.join(video_output_dir,'mouse_trajectories', f"mouse_{str(mouse_id)}_part_{str(tracklet_num)}_data.csv")
                     mouse_csv_paths.append(mouse_filename)
                     shutil.copy(tracklet_filename, mouse_filename)
