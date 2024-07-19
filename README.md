@@ -1,5 +1,6 @@
 # Detect Any Mouse Model (DAMM) [[project page](https://web.eecs.umich.edu/gkaul/DAMM/)]
-A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
+- A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
+- Checkout the asssociated [SAM annotation tool](https://github.com/backprop64/sam_annotator) used in this paper
 
 ## Setup our codebase locally (expects a gpu)
 
