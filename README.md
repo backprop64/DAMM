@@ -29,6 +29,8 @@ Use this notebook to create a dataset, annotate bounding boxes, and fine-tune an
 | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1UfktWaedUL5aS4DM8NrYLscKMP_vGwGR?usp=sharing) | Heat map generation | AER Lab |
 | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/16S11QrjkpsXIksQf6MqjvfJJLn_fbe-b?usp=sharing) | Kinematics analysis | AER Lab |
 | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/19f8eERE5KXh0Sk9RFNPR1JT9FgvXdOY7?usp=sharing) | Annotating experimental setups (e.g., behavioral apparatus) | AER Lab |
+| [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1gh3IqFnMd4G2-ao93cgSBOCe2QWQ24FX?usp=sharing) | Manually correcting ID errors | AER Lab |
+
 ---
 
 
@@ -95,4 +97,20 @@ damm_tracker.track_video(
     visulize=True,
     num_mice=2,
 )
+```
+
+    
+
+## Citing our work (models and annotation tools)
+
+If our DAMM work was useful, please cite us!
+
+```
+
+@article{kaul2024damm,
+      author    = {Gaurav Kaul and Jonathan McDevitt and Justin Johnson and Ada Eban-Rothschild},
+      title     = {DAMM for the detection and tracking of multiple animals within complex social and environmental settings},
+      journal   = {bioRxiv},
+      year      = {2024}
+}
 ```
