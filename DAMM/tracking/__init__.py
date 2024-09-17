@@ -1,1 +1,1 @@
-from .damm_tracker import Tracker
+from .sam2_tracker import Tracker

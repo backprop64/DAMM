@@ -2,10 +2,10 @@
 - A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
 - Checkout the asssociated [SAM annotation tool](https://github.com/backprop64/sam_annotator) used in this paper
 
-## Setup our codebase locally (expects a gpu)
+## Setup our codebase locally 
 
 ```bash
-$ conda create -n DAMM python=3.9 
+$ conda create -n DAMM python=3.9
 $ conda activate DAMM
 $ git clone https://github.com/backprop64/DAMM 
 $ pip install -r DAMM/requirements-gpu.txt
@@ -34,76 +34,40 @@ Use this notebook to create a dataset, annotate bounding boxes, and fine-tune an
 ---
 
 
-## Example usage (Code API)
+## Using DAMM in your python scripts
 
 ```python
 
-from DAMM.detection import Detector
 from DAMM.tracking import Tracker
-from DAMM.data import sample_frames, find_video_files
 
-CONFIG_PATH = "path/to/config.yaml"
-WEIGHTS_PATH = "path/to/model_final.pth"
-EXPARAMENT_VIDEOS = "path/to/exparamental_data"
+   
+    sam_checkpoint = 'sam_model.pth'
+    sam_model_cfg = 'sam_config.yaml'
+        
+    damm_checkpoint = 'damm_model.pth'
+    damm_model_cfg = 'damm_config.yaml'
 
-# load DAMM detector
-damm_detector = Detector(
-    cfg_path=CONFIG_PATH,
-    model_path=WEIGHTS_PATH,
-    output_dir="demo_output",
-)
+    video_path = 'path/to/video'
+    output_path = 'path/to/output/folder'
 
-# find videos within the demo directory
-demo_video_paths = find_video_files(directory=EXPARAMENT_VIDEOS)
+    mouse_tracker = PromptableVideoTracker(checkpoint, model_cfg)
+    mouse_tracker.predict_long_video(video_path, output_path, 50)
 
-# sample 50 frames from found videos
-sampled_frame_paths = sample_frames(
-    demo_video_paths,
-    50,
-    output_folder="demo_output/sampled_images",
-)
 
-# Use default weights to detect mice in images (zero-shot)
-damm_detector.predict_img(
-    sampled_frame_paths,
-    output_folder="demo_output/zero_shot_detection_predictions",
-)
-
-# fine tune detector, (hidden step: 100 images were sampled randomly and annotated in collab)
-damm_detector.train_detector(
-    "my_dataset/metadata.json"
-)
-
-# Use fine_tuned weights to detect mice in images (few-shot/50-shot)
-damm_detector.predict_img(
-    sampled_frame_paths,
-    output_folder="demo_output/few_shot_detection_predictions",
-)
-
-# Use default weights to initilize a tracker
-damm_tracker = Tracker(
-    cfg_path="/demo_output/training/config.yaml",
-    model_path="demo_output/model_final.pth",
-    output_dir="demo_output/tracking_output",
-)
-
-damm_tracker.track_video(
-    video_path="/path/to/video.mp4",
-    threshold=0.7,
-    max_detections=2,
-    max_age=100,
-    min_hits=10,
-    iou_threshold=0.1,
-    visulize=True,
-    num_mice=2,
-)
 ```
+## Using DAMM in the command line
+```bash
+$ cd DAMM/tracking/
+$ conda activate DAMM
+$ python promptable_video_tracker.py \
+$    --
 
+```
     
 
 ## Citing our work (models and annotation tools)
 
-If our DAMM work was useful, please cite us!
+If our DAMM tool was useful, please cite us!
 
 ```
 
