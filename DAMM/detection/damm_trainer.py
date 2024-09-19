@@ -2,10 +2,8 @@ import glob
 import json
 import os
 import random
-
 import cv2
 import numpy as np
-import os
 import torch
 from tqdm import tqdm
 
@@ -25,7 +23,7 @@ pretrained_weights = {
     "LVIS_mask_101": "LVISv0.5-InstanceSegmentation/mask_rcnn_R_101_FPN_1x.yaml",
 }
 
-class Detector:
+class DetectorTrainer:
     def __init__(
         self,
         cfg_path: str = None,

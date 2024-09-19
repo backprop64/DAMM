@@ -6,7 +6,7 @@ from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 
 
-class Detector:
+class DAMMDetector:
     def __init__(self, cfg_path: str = None, model_path: str = None):
         self.cfg = get_cfg()
         self.cfg.set_new_allowed(True)  # Add this line before merging the file :) fixes key not found error
@@ -14,6 +14,7 @@ class Detector:
         self.cfg.MODEL.WEIGHTS = model_path
         self.cfg.MODEL.DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
         self.detector = DefaultPredictor(self.cfg)
+        self.update_detector_settings(threshold=0.85, max_detections=5)
 
     def update_detector_settings(self, threshold=0.7, max_detections=2):
         self.cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = threshold
@@ -26,14 +27,14 @@ class Detector:
         if image is None:
             raise ValueError(f"Could not read image file {image_path}.")
 
-        # Perform detection
         outputs = self.detector(image)
         instances = outputs["instances"].to("cpu")
 
-        # Extract masks, bounding boxes, and confidence scores
+        # Extract masks, bounding boxes, confidence scores, and class IDs
         masks = instances.pred_masks.numpy()
         scores = instances.scores.numpy()
         boxes = instances.pred_boxes.tensor.numpy()  # Get bounding boxes
+        class_ids = instances.pred_classes.numpy()  # Get class IDs
 
         # Get indices of top_n masks based on confidence scores
         top_indices = np.argsort(scores)[::-1][:top_n]
@@ -45,7 +46,8 @@ class Detector:
                 "id": idx,
                 "mask": masks[idx].tolist(),  # Convert mask to list for easy serialization
                 "confidence": float(scores[idx]),
-                "bbox": boxes[idx].tolist()  # Add bounding box
+                "bbox": boxes[idx].tolist(),  # Add bounding box
+                "class_id": int(class_ids[idx])  # Add class ID
             }
             top_detections.append(mask_dict)
         return top_detections
