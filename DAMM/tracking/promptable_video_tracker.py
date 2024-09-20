@@ -11,8 +11,8 @@ import torch
 import numpy as np
 
 from sam2.build_sam import build_sam2_video_predictor
-from ..detection import MaskRCNN
-from utils import mask_to_polygons,save_frame_chunk,visualize_video
+from ..detection import DAMMDetector
+from .utils import mask_to_polygons,save_frame_chunk,visualize_video
 
 class PromptableVideoTracker:
     def __init__(self, sam2_model_cfg,sam2_checkpoint, damm_model_cfg,damm_checkpoint):
@@ -27,7 +27,7 @@ class PromptableVideoTracker:
             sam2_model_cfg, sam2_checkpoint, device=device
         )
         
-        self.damm_predictor = MaskRCNN(
+        self.damm_predictor = DAMMDetector(
             damm_model_cfg,
             damm_checkpoint,
         )

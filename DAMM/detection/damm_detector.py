@@ -5,7 +5,6 @@ import numpy as np
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 
-
 class DAMMDetector:
     def __init__(self, cfg_path: str = None, model_path: str = None):
         self.cfg = get_cfg()
@@ -70,6 +69,7 @@ class DAMMDetector:
         masks = instances.pred_masks.numpy()
         scores = instances.scores.numpy()
         boxes = instances.pred_boxes.tensor.numpy()  # Get bounding boxes
+        class_ids = instances.pred_classes.numpy()  # Get class IDs
 
         # Get indices of top_n masks based on confidence scores
         top_indices = np.argsort(scores)[::-1][:top_n]
@@ -82,7 +82,8 @@ class DAMMDetector:
                 "id": idx,
                 "mask": masks[idx],
                 "confidence": float(scores[idx]),
-                "bbox": boxes[idx].tolist()  # Add bounding box
+                "bbox": boxes[idx].tolist(),  # Add bounding box
+                "class_id": int(class_ids[idx])  # Add class ID
             }
             top_detections.append(mask_dict)
         return top_detections
