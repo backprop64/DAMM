@@ -47,9 +47,9 @@ $ python setup.py install
 from DAMM.tracking import PromptableVideoTracker
 
 sam_config = 'sam2_hiera_l.yaml' # using large sam model
-sam_checkpoint = '/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/sam2_hiera_large.pt'
-damm_config = '/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/DAMM_config.yaml'
-damm_checkpoint = '/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/DAMM_weights.pth'
+sam_checkpoint = 'path/to/models/sam2_hiera_large.pt'
+damm_config = 'path/to/models/DAMM_config.yaml'
+damm_checkpoint = 'path/to/models/DAMM_weights.pth'
 
 mouse_tracker = PromptableVideoTracker(sam_config,
                                          sam_checkpoint,
