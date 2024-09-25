@@ -4,16 +4,14 @@
   
 ## Updates
 *[Sep 2024]* SAM 2 incorperated to automatic mouse tracking
-
 *[Sep 2024]* DAMM accepted into Scientific Reports
 
 ## Setup our codebase locally, tested on a linux system with a GPU 
 
 ```bash
 # create conda enviornent
-conda create -n sammy6 python=3.10
-conda activate sammy6
-conda install conda-forge::opencv
+conda create -n DAMM python=3.10
+conda activate DAMM
 
 #get codebase
 git clone https://github.com/backprop64/DAMM 
@@ -25,9 +23,10 @@ git clone https://github.com/facebookresearch/segment-anything-2.git
 cd segment-anything-2
 pip install . 
 
-# setup detectron2
+# setup detectron2, torch, opencv
 conda install conda-forge::detectron2
 conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia 
+conda install conda-forge::opencv
 
 # make everything importable
 cd - 
@@ -35,22 +34,45 @@ python setup.py install
 ```
 ---
 
+## get the model weights:
+
+```bash
+# detect any mouse model/config
+wget https://www.dropbox.com/s/39a690qldduxawz/DAMM_weights.pth
+wget https://www.dropbox.com/s/wegw8l5zq3vqln0/DAMM_config.yaml
+
+
+# sam model weights  (models below are ordered from smallest to largest, and you only need 1)
+wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt #(associated config: sam2_hiera_tiny.yaml)
+wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_small.pt #(associated config: sam2_hiera_small.yaml)
+wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_plus.pt #(associated config: sam2_hiera_base_plus.yaml)
+wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.pt #(associated config: sam2_hiera_large.yaml)
+
+```
 
 ## Using DAMM in your python scripts
 
 ```python
 from DAMM.tracking import PromptableVideoTracker
 
-sam_config = 'sam2_hiera_l.yaml' # using large sam model
-sam_checkpoint = 'path/to/models/sam2_hiera_large.pt'
-damm_config = 'path/to/models/DAMM_config.yaml'
-damm_checkpoint = 'path/to/models/DAMM_weights.pth'
+#initilize tracking setup 
+mouse_tracker = PromptableVideoTracker(
+    sam_config="sam2_hiera_l.yaml", # you dont need to download this, its already in the sam repo
+    sam_checkpoint= "path/to/sam2_hiera_large.pt",
+    damm_config="path/to/DAMM_config.yaml",
+    damm_checkpoint="path/to/DAMM_weights.pth"
+)
 
-mouse_tracker = PromptableVideoTracker(sam_config,
-                                         sam_checkpoint,
-                                         damm_config,
-                                         damm_checkpoint)
-
+# Track the first 250 frames of demo_video.mp4
+# Save the output and visualization to the output_dir
+mouse_tracker.predict_video(
+    video_path='demo_video.mp4',
+    output_dir='demo_output/',
+    batch_size=64,
+    start_frame=0,
+    end_frame=250,
+    visualize=True
+)
 
 ```
 ## Using DAMM in the command line
@@ -97,11 +119,14 @@ Use this notebook to create a dataset, annotate bounding boxes, and fine-tune an
 If our DAMM tool was useful, please cite us!
 
 ```
-
 @article{kaul2024damm,
-      author    = {Gaurav Kaul and Jonathan McDevitt and Justin Johnson and Ada Eban-Rothschild},
-      title     = {DAMM for the detection and tracking of multiple animals within complex social and environmental settings},
-      journal   = {bioRxiv},
-      year      = {2024}
+  author    = {Gaurav Kaul and Jonathan McDevitt and Justin Johnson and Ada Eban-Rothschild},
+  title = {DAMM for the detection and tracking of multiple animals within complex social and environmental settings},
+  journal = {Scientific Reports},
+  volume = {14},
+  pages = {21366},
+  year = {2024},
+  doi = {10.1038/s41598-024-72367-2},
+  url = {https://doi.org/10.1038/s41598-024-72367-2},
 }
 ```
