@@ -1,19 +1,65 @@
 # Detect Any Mouse Model (DAMM) [[project page](https://web.eecs.umich.edu/gkaul/DAMM/)]
 - A codebase for single/multi-animal tracking in videos (Kaul et al. 2024).
 - Checkout the asssociated [SAM annotation tool](https://github.com/backprop64/sam_annotator) used in this paper
+  
+## Updates
 
-## Setup our codebase locally 
+*[Sep 2024]* SAM 2 incorperated to automatic mouse tracking 
+*[Sep 2024]* DAMM accepted into Scientific Reports
+
+## Setup our codebase locally on a system with a GPU (DAMM+SAM2)
 
 ```bash
-$ conda create -n DAMM python=3.9
-$ conda activate DAMM
+
+# create conda enviornent
+$ conda create -n sammy6 python=3.10
+$ conda activate sammy6
+
+#get codebase
 $ git clone https://github.com/backprop64/DAMM 
-$ pip install -r DAMM/requirements-gpu.txt
-$ python DAMM/setup_gpu.py install 
+$ cd DAMM
+
+# setup SAM 2
+$ conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+$ git clone https://github.com/facebookresearch/segment-anything-2.git
+$ cd segment-anything-2
+$ pip install . 
+
+# setup detectron2
+$ conda install conda-forge::detectron2
+
+# installing detectron2 with conda can potentially revert torch back to a CPU version, so this double checks to ensure we have GPU acesss
+$ conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia 
+
+# setup remaining packages 
+$ conda install conda-forge::opencv
+
+# make DAMM importable
+$ cd - 
+$ python setup.py install 
 ```
 ---
 
-## Use our system entirely in Google Colab
+
+## Using DAMM in your python scripts
+
+```python
+from DAMM.tracking import PromptableVideoTracker
+
+sam_config = 'sam2_hiera_l.yaml' # using large sam model
+sam_checkpoint = '/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/sam2_hiera_large.pt'
+damm_config = '/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/DAMM_config.yaml'
+damm_checkpoint = '/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/DAMM_weights.pth'
+
+mouse_tracker = PromptableVideoTracker(sam_config,
+                                         sam_checkpoint,
+                                         damm_config,
+                                         damm_checkpoint)
+
+
+```
+
+## Use our system entirely in Google Colab (DAMM+SORT)
 
 ### DAMM Tracking Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1AK9Y7PO4HKNRZ05UgmeJB8NyV2it_V0z?usp=sharing)
 
@@ -34,36 +80,6 @@ Use this notebook to create a dataset, annotate bounding boxes, and fine-tune an
 ---
 
 
-## Using DAMM in your python scripts
-
-```python
-
-from DAMM.tracking import Tracker
-
-   
-    sam_checkpoint = 'sam_model.pth'
-    sam_model_cfg = 'sam_config.yaml'
-        
-    damm_checkpoint = 'damm_model.pth'
-    damm_model_cfg = 'damm_config.yaml'
-
-    video_path = 'path/to/video'
-    output_path = 'path/to/output/folder'
-
-    mouse_tracker = PromptableVideoTracker(checkpoint, model_cfg)
-    mouse_tracker.predict_long_video(video_path, output_path, 50)
-
-
-```
-## Using DAMM in the command line
-```bash
-$ cd DAMM/tracking/
-$ conda activate DAMM
-$ python promptable_video_tracker.py \
-$    --
-
-```
-    
 
 ## Citing our work (models and annotation tools)
 
