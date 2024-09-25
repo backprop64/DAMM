@@ -7,8 +7,7 @@
 
 [Sep 2024] DAMM accepted into Scientific Reports!
 
-## Setup our codebase locally, tested on a linux system with a GPU 
-
+## Setup this codebase locally, tested on a linux system with a GPU 
 ```bash
 # create conda enviornent
 conda create -n DAMM python=3.10
@@ -35,8 +34,7 @@ python setup.py install
 ```
 ---
 
-## get the model weights:
-
+## Download Model Weights
 ```bash
 # detect any mouse model/config
 wget https://www.dropbox.com/s/39a690qldduxawz/DAMM_weights.pth
@@ -51,8 +49,7 @@ wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.p
 
 ```
 
-## Using DAMM in your python scripts
-
+## Track Mice in your Python Scripts
 ```python
 from DAMM.tracking import PromptableVideoTracker
 
@@ -76,7 +73,7 @@ mouse_tracker.predict_video(
 )
 
 ```
-## Using DAMM in the command line
+## Track Mice Via the Command line
 
 ```bash
 conda activate DAMM
