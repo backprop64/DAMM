@@ -13,7 +13,7 @@ class DAMMDetector:
         self.cfg.MODEL.WEIGHTS = model_path
         self.cfg.MODEL.DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
         self.detector = DefaultPredictor(self.cfg)
-        self.update_detector_settings(threshold=0.85, max_detections=5)
+        self.update_detector_settings(threshold=0.85, max_detections=8)
 
     def update_detector_settings(self, threshold=0.7, max_detections=2):
         self.cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = threshold

@@ -32,8 +32,7 @@ class PromptableVideoTracker:
             damm_checkpoint,
         )
 
-
-    def predict_long_video(self, video_path, output_dir, batch_size, start_frame=0, end_frame=None):
+    def predict_video(self, video_path, output_dir, batch_size, start_frame=0, end_frame=None,visualize=True):
         self.video_path = video_path
 
         # create folder structure for output
@@ -41,13 +40,21 @@ class PromptableVideoTracker:
         self.temp_frames_folder = os.path.join(output_dir, "tmp_video_frames") 
         self.frame_predictions_folder = os.path.join(output_dir, "frame_predictions")  
 
+        cap = cv2.VideoCapture(self.video_path)
+        self.total_frames_in_video = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        cap.release()
+
         self.start_frame = start_frame
-        self.max_frames = end_frame
-        self.max_frame_number = self.max_frames - start_frame
+
+        if end_frame:
+            self.max_frame_number = min(end_frame, self.total_frames_in_video)
+        else:
+            self.max_frame_number = self.total_frames_in_video
+
         self.batch_size = batch_size
     
 
-        self.total_batches = int(np.ceil(self.max_frames - start_frame/batch_size))
+        self.total_batches = int(np.ceil((self.max_frame_number - self.start_frame)/batch_size))
         self.current_batch = 0 
 
         os.makedirs(self.output_dir, exist_ok=True)
@@ -56,11 +63,11 @@ class PromptableVideoTracker:
 
         print(' - //////////////////////////////// -')
         print(' - Using sam2 + damm to track video - ')
-        print(' - Total Frames:',self.max_frames)
+        print(' - # of Frames to Track:', self.max_frame_number - self.start_frame)
         print(' - Batch Size:',self.batch_size)
         print(' - Number Batches:',self.total_batches)
-        print(' - Number Batches:',self.total_batches)
         print(' - Storing predictions in:', self.frame_predictions_folder)
+        print(' - ||||||||||||||||||||||||||||||| -')
 
     
         mice_prompts = self.damm_predictor.get_frame_masks(self.video_path, 0, 3)
@@ -70,12 +77,23 @@ class PromptableVideoTracker:
             mice_prompts = self.predict_chunk(mice_prompts)
             self.current_batch += 1
 
+        shutil.rmtree(self.temp_frames_folder)
+
         frame_data = []
         for file in glob.glob(os.path.join(self.frame_predictions_folder,'*.json')):
             frame_data.extend(json.load(open(file))['annotations'])
-        sorted_frame_data = sorted(frame_data, key=lambda x: x["frame_num"])
         
-        visualize_video(sorted_frame_data,self.video_path,self.output_dir)
+        # save all output data
+        combined_output_json = {'predictions':frame_data}
+        output_file_path = os.path.join(self.output_dir,'predictions.json')
+        with open(output_file_path, 'w') as json_file:
+            json.dump(combined_output_json, json_file, indent=4)
+        print(f"JSON saved to {output_file_path}")
+
+        #visualize output
+        if visualize:
+            sorted_frame_data = sorted(frame_data, key=lambda x: x["frame_num"])
+            visualize_video(sorted_frame_data,self.video_path,self.output_dir)
         
         return
 
@@ -129,7 +147,7 @@ class PromptableVideoTracker:
     def prompt_sam(self, annotation):
 
         if "mask" in annotation.keys():
-            print('added mask prompt for mouse',annotation["id"] )
+            #print('added mask prompt for mouse',annotation["id"] )
             self.sam2_video_predictor.add_new_mask(
                 inference_state=self.inference_state,
                 frame_idx=annotation["frame_num"],
@@ -138,7 +156,7 @@ class PromptableVideoTracker:
             )
 
         if "bbox" in annotation.keys():
-            print('added bbox prompt for mouse',annotation["id"] )
+            #print('added bbox prompt for mouse',annotation["id"] )
             box = np.array(annotation["bbox"], dtype=np.float32)
             self.sam2_video_predictor.add_new_points_or_box(
                 inference_state=self.inference_state,
@@ -148,30 +166,32 @@ class PromptableVideoTracker:
             )
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Segment a video using SAM2VideoSegmenter.")
-    
-    parser.add_argument('--sam_checkpoint', type=str, required=True, help="Path to the checkpoint file.")
-    parser.add_argument('--damm_checkpoint', type=str, required=True, help="Path to the checkpoint file.")
-    
-    parser.add_argument('--sam_model_cfg', type=str, required=True, help="Path to the model configuration file.")
-    parser.add_argument('--damm_model_cfg', type=str, required=True, help="Path to the model configuration file.")
-    
-    parser.add_argument('--video_path', type=str, required=True, help="Path to the input video file.")
-    parser.add_argument('--output_path', type=str, required=True, help="Path to the output directory where results will be saved.")
-    
-    parser.add_argument('--start_frame', type=int, default=0, help="Starting frame number (default: 0).")
-    parser.add_argument('--end_frame', type=int, default=None, help="Ending frame number (default: None).")
+    parser = argparse.ArgumentParser(description='Video Tracking with DAMM and SAM2')
+    parser.add_argument('--sam_config', type=str, default='sam2_hiera_l.yaml', help='Path to SAM configuration file')
+    parser.add_argument('--sam_checkpoint', type=str, default='/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/sam2_hiera_large.pt', help='Path to SAM checkpoint file')
+    parser.add_argument('--damm_config', type=str, default='/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/DAMM_config.yaml', help='Path to DAMM configuration file')
+    parser.add_argument('--damm_checkpoint', type=str, default='/nfs/turbo/lsa-adae/kaulg/datasets/DAMM/models/DAMM_weights.pth', help='Path to DAMM weights file')
+    parser.add_argument('--video_input', type=str, required=True, help='Path to input video file')
+    parser.add_argument('--output_dir', type=str, default='test_out/', help='Directory for output results')
+    parser.add_argument('--start_frame', type=int, default=0, help='Starting frame for processing')
+    parser.add_argument('--end_frame', type=int, default=1000, help='Ending frame for processing')
+    parser.add_argument('--batch_size', type=int, default=100, help='Ending frame for processing')
+    parser.add_argument('--visualize', type=bool, default=True, help='Whether to visualize the output')
 
     args = parser.parse_args()
-    
-    sam_checkpoint = args.sam_checkpoint
-    sam_model_cfg = args.sam_model_cfg
-        
-    damm_checkpoint = args.damm_checkpoint
-    damm_model_cfg = args.damm_model_cfg
 
-    video_path = args.video_path
-    output_path = args.output_path
+    mouse_tracker = PromptableVideoTracker(
+        args.sam_config,
+        args.sam_checkpoint,
+        args.damm_config,
+        args.damm_checkpoint
+    )
 
-    sam2segmenter = PromptableVideoTracker(sam_model_cfg,sam_checkpoint,damm_model_cfg,damm_checkpoint )
-    sam2segmenter.predict_long_video(video_path, output_path, 50)
+    mouse_tracker.predict_video(
+        args.video_input,
+        args.output_dir,
+        args.batch_size,
+        start_frame=args.start_frame,
+        end_frame=args.end_frame,
+        visualize=args.visualize
+    )

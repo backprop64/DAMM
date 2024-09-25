@@ -7,11 +7,10 @@ def assign_colors(mouse_ids):
     """Assign a unique color to each mouse ID."""
     colors = {}
     for idx, mouse_id in enumerate(mouse_ids):
-        # Generate a color (BGR format)
         colors[mouse_id] = (np.random.randint(0, 256), np.random.randint(0, 256), np.random.randint(0, 256))
     return colors
 
-def visualize_video(frame_data, video_path, output_folder, target_scale=1):
+def visualize_video(frame_data, video_path, output_folder):
     """visualize tracking using the frame data output"""
     # Create the output folder if it does not exist
     if not os.path.exists(output_folder):
@@ -26,10 +25,6 @@ def visualize_video(frame_data, video_path, output_folder, target_scale=1):
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     
-    # Calculate scaled dimensions
-    scaled_width = int(width * target_scale)
-    scaled_height = int(height * target_scale)
-    
     # Get the list of mouse IDs from the first frame data
     mouse_ids = [key for key in frame_data[0] if key != 'frame_num']
     colors = assign_colors(mouse_ids)
@@ -37,7 +32,7 @@ def visualize_video(frame_data, video_path, output_folder, target_scale=1):
     # Prepare to write the output video
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     output_path = os.path.join(output_folder, 'output_video.mp4')
-    out = cv2.VideoWriter(output_path, fourcc, fps, (scaled_width, scaled_height))
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
     
     # Process each frame
     for frame_info in tqdm(frame_data, desc="Processing frames", unit="frame"):
@@ -48,22 +43,22 @@ def visualize_video(frame_data, video_path, output_folder, target_scale=1):
             print(f"Frame {frame_num} could not be read.")
             continue
         
-        # Resize the frame
-        frame = cv2.resize(frame, (scaled_width, scaled_height))
-
         # Draw polygons
         for mouse_id, coords in frame_info.items():
             if mouse_id == 'frame_num':
                 continue
+
             if len(coords) < 4:
                 continue
 
             # Extract polygon points and scale them to the target space
-            points = [(int(coords[i]//scaled_width), int(coords[i+1]//scaled_height)) for i in range(0, len(coords), 2)]
+            points = [(int(coords[i]), int(coords[i+1])) for i in range(0, len(coords), 2)]
+
             if len(points) < 3:
                 continue
 
             # Draw the polygon
+            print('drawing_polygon')
             cv2.polylines(frame, [np.array(points, np.int32)], isClosed=True, color=colors[mouse_id], thickness=2)
         
         # Write the frame to the output video
