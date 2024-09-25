@@ -3,8 +3,8 @@
 - Checkout the asssociated [SAM annotation tool](https://github.com/backprop64/sam_annotator) used in this paper
   
 ## Updates
-
 *[Sep 2024]* SAM 2 incorperated to automatic mouse tracking 
+
 *[Sep 2024]* DAMM accepted into Scientific Reports
 
 ## Setup our codebase locally on a system with a GPU (DAMM+SAM2)
