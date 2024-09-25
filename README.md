@@ -9,7 +9,7 @@
 
 [Sep 2024] DAMM accepted into Scientific Reports!
 
-## Setup this codebase locally, tested on a linux system with a GPU 
+## Setup this codebase locally, tested on a linux system with an Nvidia GPU (DAMM Prompting + SAM-V2 Tracking)
 ```bash
 # create conda enviornent
 conda create -n DAMM python=3.10
@@ -42,7 +42,6 @@ python setup.py install
 wget https://www.dropbox.com/s/39a690qldduxawz/DAMM_weights.pth
 wget https://www.dropbox.com/s/wegw8l5zq3vqln0/DAMM_config.yaml
 
-
 # sam model weights  (models below are ordered from smallest to largest, and you only need 1)
 wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt #(associated config: sam2_hiera_tiny.yaml)
 wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_small.pt #(associated config: sam2_hiera_small.yaml)
@@ -57,7 +56,8 @@ from DAMM.tracking import PromptableVideoTracker
 
 #initilize tracking setup 
 mouse_tracker = PromptableVideoTracker(
-    sam_config="sam2_hiera_l.yaml", # you dont need to download this, its already in the sam repo
+    # sam_config: you dont need to download this or specify a full path, look for associated config file above
+    sam_config="sam2_hiera_l.yaml", 
     sam_checkpoint= "path/to/sam2_hiera_large.pt",
     damm_config="path/to/DAMM_config.yaml",
     damm_checkpoint="path/to/DAMM_weights.pth"
@@ -92,7 +92,7 @@ python track_mice.py \
     --visualize true  # Whether to visualize the output (true/false)
 ```
 
-## Use our system entirely in Google Colab (DAMM+SORT)
+## Use our system entirely in Google Colab (DAMM Prompting + SORT Tracking)
 
 ### DAMM Tracking Notebook [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1AK9Y7PO4HKNRZ05UgmeJB8NyV2it_V0z?usp=sharing)
 
