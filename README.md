@@ -10,33 +10,28 @@
 ## Setup our codebase locally on a system with a GPU (DAMM+SAM2)
 
 ```bash
-
 # create conda enviornent
-$ conda create -n sammy6 python=3.10
-$ conda activate sammy6
+conda create -n sammy6 python=3.10
+conda activate sammy6
+conda install conda-forge::opencv
 
 #get codebase
-$ git clone https://github.com/backprop64/DAMM 
-$ cd DAMM
+git clone https://github.com/backprop64/DAMM 
+cd DAMM
 
 # setup SAM 2
-$ conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
-$ git clone https://github.com/facebookresearch/segment-anything-2.git
-$ cd segment-anything-2
-$ pip install . 
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+git clone https://github.com/facebookresearch/segment-anything-2.git
+cd segment-anything-2
+pip install . 
 
 # setup detectron2
-$ conda install conda-forge::detectron2
+conda install conda-forge::detectron2
+conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia 
 
-# installing detectron2 with conda can potentially revert torch back to a CPU version, so this double checks to ensure we have GPU acesss
-$ conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia 
-
-# setup remaining packages 
-$ conda install conda-forge::opencv
-
-# make DAMM importable
-$ cd - 
-$ python setup.py install 
+# make everything importable
+cd - 
+python setup.py install 
 ```
 ---
 
