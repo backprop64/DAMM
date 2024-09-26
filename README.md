@@ -49,6 +49,7 @@ wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_base_pl
 wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_large.pt #(associated config: sam2_hiera_large.yaml)
 
 ```
+*tips: to use less compute and get your analysis faster, it would be a good idea to (1) try the small models first (2) figure out the lowest FPS that results in sucessfull tracking. The tradeoff is larger models will provide better results.
 
 ## Track Mice in your Python Scripts
 ```python
