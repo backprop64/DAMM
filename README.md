@@ -39,8 +39,8 @@ python setup.py install
 ## Download Model Weights
 ```bash
 # detect any mouse model/config
-wget https://www.dropbox.com/s/39a690qldduxawz/DAMM_weights.pth
-wget https://www.dropbox.com/s/wegw8l5zq3vqln0/DAMM_config.yaml
+wget https://www.dropbox.com/scl/fi/nboui01rnzj4w98wfkrcp/DAMM_config.yaml
+wget https://www.dropbox.com/scl/fi/btb2zjr8p9ub9pojfekd4/DAMM_weights.pth
 
 # sam model weights  (models below are ordered from smallest to largest, and you only need 1)
 wget https://dl.fbaipublicfiles.com/segment_anything_2/072824/sam2_hiera_tiny.pt #(associated config: sam2_hiera_tiny.yaml)
